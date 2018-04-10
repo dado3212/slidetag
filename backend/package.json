@@ -1,0 +1,11 @@
+{
+  "name": "slidetag",
+  "version": "1.0.0",
+  "description": "The backend for an Instagram hashtag based automatic slideshow",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alex Beals",
+  "license": "ISC"
+}
