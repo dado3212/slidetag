@@ -125,45 +125,4 @@ io.sockets.on('connection', socket => {
       }
     );
   });
-
-  // Get the most recent 100 photos tagged 'dog' with over 20 likes
-  // pollHashtag('dog', 150, 20);
-
-  // Empty the room
-  // let roomObj = io.nsps['/'].adapter.rooms[mainRoom];
-  // if (roomObj) {
-  //   Object.keys(roomObj.sockets).forEach(function(id) {
-  //     io.sockets.connected[id].leave(mainRoom);
-  //   });
-  // }
-  // // Add the new socket
-  // socket.join(mainRoom);
-
-  // // Get all unfinished tasks
-  // Task.find({ status: { $eq: 'new' } })
-  // .sort('-created_at')
-  // .then(tasks => {
-  //   tasks.forEach(function(task) {
-  //     task.status = 'processing';
-  //     task.save();
-
-  //     // Send them to be processed
-  //     io.sockets.in('main').emit('task', task);
-  //   });
-  // })
-  // .catch(err => {
-  //   res.json({ message: `Error: ${err}` });
-  // });
-
-  // // Start listening for task completion
-  // socket.on('task finished', (task) => {
-  //   Task.findOneAndUpdate({ _id: task._id }, {
-  //     status: 'finished',
-  //   })
-  //   .exec((err) => {
-  //     if (err) {
-  //       console.log(error);
-  //     }
-  //   });
-  // });
 });
