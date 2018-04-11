@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Slidetag. Create a live slideshow with Instagram photos</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/jumbotron-narrow.css" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" type="image/gif" href="animated_favicon1.gif">
+    <script src="./socket.io.js"></script>
+    <script>
+      const socket = io('http://localhost:3000', {transports: ['websocket']});
+      // socket.emit('join', 'test');
+      function refreshTag() {
+        socket.emit('slideshow_request', {
+          'hashtag': document.getElementById('hashtag').value,
+          'min_likes': document.getElementById('min_likes').value
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <input type="text" placeholder="hashtag" id="hashtag">
+    <input type="number" id="min_likes">
+    <button onclick="refreshTag()">#Test</button>
+  </body>
+</html>

@@ -5,8 +5,7 @@ const chrome = require('selenium-webdriver/chrome');
 const { sleep } = require('sleep');
 const request = require('request');
 const rp = require('request-promise');
-// const zlib = require('zlib');
-// const https = require('https');
+const socket = require('socket.io');
 
 function parseImage(imageHTML) {
   if (imageHTML.includes("img alt=")) {
@@ -83,7 +82,7 @@ async function pollHashtag(hashtag, number, min_likes) {
             fleshedOutPictures.push(a);
           }
         }
-      })
+      });
 
       // Keep scrolling to the bottom until there are new images
       await driver.executeScript(`
@@ -103,11 +102,55 @@ async function pollHashtag(hashtag, number, min_likes) {
   }
 }
 
-// Get the most recent 100 photos tagged 'dog' with over 20 likes
-pollHashtag('dog', 150, 20);
+const server = require('http').createServer();
+server.listen(3000);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+const io = socket.listen(server);
+global.io = io;
+
+io.sockets.on('connection', socket => {
+  socket.on('slideshow_request', (tag) => {
+    pollHashtag(tag.hashtag ? tag.hashtag : 'dog', 50, tag.min_likes ? tag.min_likes : 0);
+  });
+
+  // Get the most recent 100 photos tagged 'dog' with over 20 likes
+  // pollHashtag('dog', 150, 20);
+
+  // Empty the room
+  // let roomObj = io.nsps['/'].adapter.rooms[mainRoom];
+  // if (roomObj) {
+  //   Object.keys(roomObj.sockets).forEach(function(id) {
+  //     io.sockets.connected[id].leave(mainRoom);
+  //   });
+  // }
+  // // Add the new socket
+  // socket.join(mainRoom);
+
+  // // Get all unfinished tasks
+  // Task.find({ status: { $eq: 'new' } })
+  // .sort('-created_at')
+  // .then(tasks => {
+  //   tasks.forEach(function(task) {
+  //     task.status = 'processing';
+  //     task.save();
+
+  //     // Send them to be processed
+  //     io.sockets.in('main').emit('task', task);
+  //   });
+  // })
+  // .catch(err => {
+  //   res.json({ message: `Error: ${err}` });
+  // });
+
+  // // Start listening for task completion
+  // socket.on('task finished', (task) => {
+  //   Task.findOneAndUpdate({ _id: task._id }, {
+  //     status: 'finished',
+  //   })
+  //   .exec((err) => {
+  //     if (err) {
+  //       console.log(error);
+  //     }
+  //   });
+  // });
 });
-
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
