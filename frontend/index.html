@@ -16,7 +16,7 @@
         newImage.setAttribute("url", image.url);
         document.getElementById("images").appendChild(newImage);
       });
-      // socket.emit('join', 'test');
+
       function refreshTag() {
         document.getElementById('images').innerHTML = '';
         socket.emit('slideshow_request', {
