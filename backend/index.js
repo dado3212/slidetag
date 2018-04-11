@@ -48,7 +48,7 @@ async function fleshOut(item) {
         like_count: (data["entry_data"]["PostPage"][0]["graphql"]["shortcode_media"]["edge_media_preview_like"]["count"]),
         is_video: !!(data["entry_data"]["PostPage"][0]["graphql"]["shortcode_media"]["is_video"]),
         url: item.url,
-        image_url: item.image_url,
+        image_url: (data["entry_data"]["PostPage"][0]["graphql"]["shortcode_media"]["display_url"])
       };
       return modified;
     } else {

@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>SlideTag</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 
     <script src="./js/socket.io.js"></script>
 
@@ -36,8 +37,13 @@
       }
 
       #images img {
-        max-height: 500px;
-        max-width: 500px;
+        height: calc(100vh - 80px);
+        width: auto;
+        margin: 0 auto;
+
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0%);
       }
 
       .create-slideshow {
@@ -120,6 +126,10 @@
 
         background: linear-gradient(90deg, #9b6954 0%, #9b6954 5%, #fb3958 5%, #fb3958 10%, #ffc838 10%, #ffc838 15%, #6dc993 15%, #6dc993 20%, #458eff 20%, #458eff 25%, #9b6954 25%, #9b6954 30%)
       }
+
+      .slick-prev:before, .slick-next:before {
+        color: black;
+      }
     </style>
   </head>
   <body>
@@ -151,7 +161,7 @@
       });
 
       function imageClick(a) {
-        window.open($(a).attr('url'),'_blank');
+        window.open($(a).attr('src'),'_blank');
       }
 
       function refreshTag() {
@@ -160,7 +170,6 @@
         // Refresh the slideshow
         $('#images').html('');
         $('#images').slick({
-          'accessibility': false,
           'autoplay': true,
           'fade': true,
           'infinite': true,
