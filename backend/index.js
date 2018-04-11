@@ -7,6 +7,15 @@ const request = require('request');
 const rp = require('request-promise');
 const socket = require('socket.io');
 
+function alreadyExists(array, item) {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i].url == item.url) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function parseImage(imageHTML) {
   if (imageHTML.includes("img alt=")) {
     match = imageHTML.match(/<a href="(.*?)">.*<img alt="([\s\S]*?)".*src="(.*?)"/);
@@ -48,7 +57,7 @@ async function fleshOut(item) {
   }
 }
 
-async function pollHashtag(hashtag, number, min_likes) {
+async function pollHashtag(hashtag, number, min_likes, callback) {
   // Build a new driver for the browser searching
   let driver = await new Builder()
     .forBrowser('chrome')
@@ -75,11 +84,12 @@ async function pollHashtag(hashtag, number, min_likes) {
       let imageElements = imageHTMLs.map(element => parseImage(element));
 
       imageElements.forEach(async (item) => {
-        if (!pictures.includes(item)) {
+        if (!alreadyExists(pictures, item)) {
           pictures.push(item);
           let a = await fleshOut(item);
           if (a && a.like_count >= min_likes && !a.is_video) {
             fleshedOutPictures.push(a);
+            callback(a);
           }
         }
       });
@@ -110,7 +120,14 @@ global.io = io;
 
 io.sockets.on('connection', socket => {
   socket.on('slideshow_request', (tag) => {
-    pollHashtag(tag.hashtag ? tag.hashtag : 'dog', 50, tag.min_likes ? tag.min_likes : 0);
+    pollHashtag(
+      tag.hashtag ? tag.hashtag : 'dog', // hashtag
+      tag.number ? tag.number : 10, // number of posts
+      tag.min_likes ? tag.min_likes : 0, // min number of likes
+      (post) => {
+        socket.emit('new_image', post);
+      }
+    );
   });
 
   // Get the most recent 100 photos tagged 'dog' with over 20 likes

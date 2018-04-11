@@ -9,18 +9,37 @@
     <script src="./socket.io.js"></script>
     <script>
       const socket = io('http://localhost:3000', {transports: ['websocket']});
+
+      socket.on('new_image', function (image) {
+        var newImage = document.createElement("img");
+        newImage.setAttribute("src", image.image_url);
+        newImage.setAttribute("url", image.url);
+        document.getElementById("images").appendChild(newImage);
+      });
       // socket.emit('join', 'test');
       function refreshTag() {
+        document.getElementById('images').innerHTML = '';
         socket.emit('slideshow_request', {
           'hashtag': document.getElementById('hashtag').value,
-          'min_likes': document.getElementById('min_likes').value
+          'min_likes': document.getElementById('min_likes').value,
+          'number': document.getElementById('number').value
         });
       }
     </script>
   </head>
   <body>
-    <input type="text" placeholder="hashtag" id="hashtag">
-    <input type="number" id="min_likes">
+    <label for="hashtag">Hashtag</label>
+    <input type="text" placeholder="hashtag" id="hashtag" value="dog">
+
+    <label for="min_likes">Minimum Likes</label>
+    <input type="number" id="min_likes" value=10>
+
+    <label for="number">Number of posts</label>
+    <input type="number" id="number" value=15>
+
     <button onclick="refreshTag()">#Test</button>
+
+    <div id="images">
+    </div>
   </body>
 </html>
