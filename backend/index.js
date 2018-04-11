@@ -63,7 +63,7 @@ async function pollHashtag(hashtag, number, min_likes, callback) {
   // Build a new driver for the browser searching
   let driver = await new Builder()
     .forBrowser('chrome')
-    // .setChromeOptions(new chrome.Options().headless().windowSize({ width: 1080, height: 920 }))
+    .setChromeOptions(new chrome.Options().headless().windowSize({ width: 1080, height: 920 }))
     .build();
 
   try {
@@ -71,7 +71,6 @@ async function pollHashtag(hashtag, number, min_likes, callback) {
     await driver.get(`https://www.instagram.com/explore/tags/${hashtag}/`);
     // Create an empty array
     let pictures = [];
-    // _6d3hm _mnav9
 
     // Inject code to scroll up and down until there's enough photos
     let customID = 'slidetag-custom-div-ended';

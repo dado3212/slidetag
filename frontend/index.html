@@ -2,30 +2,26 @@
 <html>
   <head>
     <title>Slidetag. Create a live slideshow with Instagram photos</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="css/jumbotron-narrow.css" rel="stylesheet">
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="icon" type="image/gif" href="animated_favicon1.gif">
-    <script src="./socket.io.js"></script>
-    <script>
-      const socket = io('http://localhost:3000', {transports: ['websocket']});
 
-      socket.on('new_image', function (image) {
-        var newImage = document.createElement("img");
-        newImage.setAttribute("src", image.image_url);
-        newImage.setAttribute("url", image.url);
-        document.getElementById("images").appendChild(newImage);
-      });
+    <script src="./js/socket.io.js"></script>
 
-      function refreshTag() {
-        document.getElementById('images').innerHTML = '';
-        socket.emit('slideshow_request', {
-          'hashtag': document.getElementById('hashtag').value,
-          'min_likes': document.getElementById('min_likes').value,
-          'number': document.getElementById('number').value
-        });
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="./slick/slick.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="./slick/slick-theme.css"/>
+
+    <style>
+      #images {
+        width: 500px;
+        margin: 20px auto;
       }
-    </script>
+      #images img {
+        max-height: 500px;
+        max-width: 500px;
+      }
+    </style>
   </head>
   <body>
     <label for="hashtag">Hashtag</label>
@@ -37,9 +33,39 @@
     <label for="number">Number of posts</label>
     <input type="number" id="number" value=15>
 
-    <button onclick="refreshTag()">#Test</button>
+    <button onclick="refreshTag()">Refresh Slideshow with Tag</button>
 
     <div id="images">
     </div>
+
+    <script>
+      const socket = io('http://localhost:3000', {transports: ['websocket']});
+
+      socket.on('new_image', function (image) {
+        $('#images').slick('slickAdd','<div class="item"><img src="' + image.image_url + '"/></div>');
+      });
+
+      function refreshTag() {
+        // Refresh the slideshow
+        $('#images').html('');
+        $('#images').slick({
+          'accessibility': false,
+          'autoplay': true,
+          'fade': true,
+          'infinite': true,
+          'cssEase': 'linear',
+          'slidesToShow': 1,
+          'slidesToScroll': 1,
+          'centerMode': true,
+        });
+
+        // Emit the slideshow_request
+        socket.emit('slideshow_request', {
+          'hashtag': document.getElementById('hashtag').value,
+          'min_likes': document.getElementById('min_likes').value,
+          'number': document.getElementById('number').value
+        });
+      }
+    </script>
   </body>
 </html>
