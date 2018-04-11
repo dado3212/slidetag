@@ -147,8 +147,12 @@
       const socket = io('http://localhost:3000', {transports: ['websocket']});
 
       socket.on('new_image', function (image) {
-        $('#images').slick('slickAdd','<div class="item"><img src="' + image.image_url + '"/></div>');
+        $('#images').slick('slickAdd','<div class="item"><img onclick="imageClick(this);" src="' + image.image_url + '" url="' + image.url + '"/></div>');
       });
+
+      function imageClick(a) {
+        window.open($(a).attr('url'),'_blank');
+      }
 
       function refreshTag() {
         $('.create-slideshow').hide();

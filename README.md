@@ -7,3 +7,6 @@ Currently running with
 ### Libraries
 * slick - Slideshow JS manager
 * Socket.IO - Socket
+
+### CSS
+https://blog.codepen.io/2016/05/13/new-instagram-logo-in-css-four-ways/
