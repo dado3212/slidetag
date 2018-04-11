@@ -13,21 +13,34 @@
     <link rel="stylesheet" type="text/css" href="./slick/slick-theme.css"/>
 
     <style>
+      html {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+      }
+
       body {
         font-family: sans-serif;
         font-size: 14px;
+
+        width: 100%;
+        height: 100%;
+        margin: 0px;
       }
 
       #images {
         width: 500px;
-        margin: 20px auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
+
       #images img {
         max-height: 500px;
         max-width: 500px;
       }
 
-      .create_slideshow {
+      .create-slideshow {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -43,28 +56,45 @@
         overflow: hidden;
       }
 
-      .create_slideshow label {
+      .big-input {
+        margin-top: 75px;
+      }
+
+      .big-input, .small-input {
+        margin-bottom: 5px;
+      }
+
+      .create-slideshow label {
         display: block;
         margin-bottom: 3px;
+
+        color: #0c3a5b;
+        font-size: 18px;
       }
 
-      .create_slideshow label:first-of-type {
-        margin-top: 90px;
-      }
-
-      .create_slideshow input {
-        width: 100%;
+      .create-slideshow input {
+        width: 50%;
+        display: block;
         border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.1);
+
         -webkit-appearance: none;
         appearance: none;
         border: none;
-        padding: 5px;
 
-        margin-bottom: 15px;
-        font-size: 1em;
+        padding: 10px 15px;
+
+        margin: 0px auto;
+        font-size: 1.5em;
+        text-align: center;
       }
 
-      .create_slideshow button {
+      .small-input input {
+        padding: 8px;
+        width: 25%;
+      }
+
+      .create-slideshow button {
         border-radius: 3px;
         -webkit-appearance: none;
         appearance: none;
@@ -78,7 +108,7 @@
         color: #333;
       }
 
-      .create_slideshow .stripe {
+      .create-slideshow .stripe {
         height: 100px;
         width: 100%;
         display: block;
@@ -93,17 +123,20 @@
     </style>
   </head>
   <body>
-    <div class="create_slideshow">
+    <div class="create-slideshow">
       <span class="stripe"></span>
-      <label for="hashtag">Hashtag</label>
-      <input type="text" placeholder="hashtag" id="hashtag" value="dog">
-      <br>
-      <label for="min_likes">Minimum Likes</label>
-      <input type="number" id="min_likes" value=10>
-      <br>
-      <label for="number">Number of posts</label>
-      <input type="number" id="number" value=15>
-      <br>
+      <div class="big-input">
+        <label for="hashtag">Hashtag</label>
+        <input type="text" class="large" placeholder="hashtag" id="hashtag" value="dog">
+      </div>
+      <div class="small-input">
+        <label for="min_likes">Minimum Likes</label>
+        <input type="number" id="min_likes" value=10>
+      </div>
+      <div class="small-input">
+        <label for="number">Number of posts</label>
+        <input type="number" id="number" value=15>
+      </div>
       <button onclick="refreshTag()">Refresh Slideshow with Tag</button>
     </div>
 
@@ -118,6 +151,8 @@
       });
 
       function refreshTag() {
+        $('.create-slideshow').hide();
+
         // Refresh the slideshow
         $('#images').html('');
         $('#images').slick({
