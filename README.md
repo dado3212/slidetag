@@ -8,5 +8,8 @@ Currently running with
 * slick - Slideshow JS manager
 * Socket.IO - Socket
 
+### Writing Bits
+https://github.com/ScriptSmith/insta-scrape
+
 ### CSS
 https://blog.codepen.io/2016/05/13/new-instagram-logo-in-css-four-ways/
